@@ -2,199 +2,189 @@
 	N1: .asciiz "Digite o primeiro numero: "
 	N2: .asciiz "Digite o segundo numero: "
 	N3: .asciiz "Digite o terceiro numero: "
-	Maior: .asciiz "Maior valor: "
-	Medio: .asciiz "Valor intermediario: "
-	Menor: .asciiz "Menor valor: "
+	Maior: .asciiz "\nMaior valor: "
+	Medio: .asciiz "\nValor intermediario: "
+	Menor: .asciiz "\nMenor valor: "
 .text
 	# Primeiro input
 	li $v0,4
 	la $a0,N1
 	syscall
-	
 	li $v0,5
 	syscall 
-	
 	move $t0, $v0
 	
 	# Segundo input
 	li $v0,4
 	la $a0,N2
 	syscall
-	
 	li $v0,5
 	syscall 
-	
 	move $t1, $v0
 	
 	# Terceiro input
 	li $v0,4
 	la $a0,N3
 	syscall
-	
 	li $v0, 5
 	syscall 
-	
 	move $t2, $v0
 	
+	# Comparações
 	
-	bgt $t0, $t1, t0t1
-	bgt $t1,$t2, t1t2
-	j t2t1t0
+	bgt $t0, $t1, Se_t0_maior_t1                 # Se t0 > t1
+	bgt $t0, $t2, t1_maior_t0_maior_t2           # Senão Se t0 > t2
+	bgt $t1, $t2, t1_maior_t2_maior_t0           # Senão Se t1 > t2
+	j t2_maior_t1_maior_t0                       # Senão
 	
-	t0t1: 
-		bgt $t1, $t2, t0t1t2
-		bgt $t0, $t2, t0t2t1
-		j t2t0t1
-	t1t2:
-		bgt $t2, $t0, t1t2t0
-		bgt $t1, $t0, t1t0t2
+	# Funções 
+	Se_t0_maior_t1:				     # Se t0 > t1
+		bgt $t1, $t2, t0_maior_t1_maior_t2   # Senão Se t1 > t2
+		bgt $t0, $t2, t0_maior_t2_maior_t1   # Senão Se t0 > t2
+	t2_maior_t0_maior_t1:			     # Senão 
+		li $v0, 4
+		la $a0, Maior
+		syscall
+		move $a0,$t2
+		li $v0,1
+		syscall
 		
+		li $v0, 4
+		la $a0, Medio
+		syscall
+		move $a0, $t0
+		li $v0, 1
+		syscall
 		
-	t0t1t2:
+		li $v0,4
+		la $a0, Menor
+		syscall
+		move $a0, $t1
+		li $v0, 1
+		syscall
+		
+		j Fim
+	
+	t0_maior_t1_maior_t2:   
 		li $v0, 4
 		la $a0,Maior
-		syscall 
-		
+		syscall
 		move $a0, $t0
+		li $v0,1
 		syscall
 		
-		li $v0, 4
+		li $v0,4
 		la $a0,Medio
 		syscall
-		
 		move $a0, $t1
+		li $v0,1
 		syscall
 		
-		li $v0, 4
+		li $v0,4
 		la $a0,Menor
 		syscall
-		
 		move $a0, $t2
+		li $v0,1
 		syscall
 	
-		j fim
+		j Fim
+	
+	t0_maior_t2_maior_t1:
+		li $v0,4
+		la $a0,Maior
+		syscall
+		move $a0, $t0
+		li $v0,1
+		syscall
 		
-	t0t2t1:
-		li $v0, 4
+		li $v0,4
+		la $a0,Medio
+		syscall
+		move $a0, $t2
+		li $v0,1
+		syscall
+		
+		li $v0,4
+		la $a0,Menor
+		syscall
+		move $a0, $t1
+		li $v0,1
+		syscall
+
+		j Fim
+
+	t1_maior_t0_maior_t2: 
+		li $v0,4
 		la $a0,Maior
 		syscall 
-		
-		move $a0, $t0
+		move $a0,$t1
+		li $v0,1
 		syscall
 		
-		li $v0, 4
+		li $v0,4
 		la $a0,Medio
 		syscall
-		
-		move $a0, $t2
+		move $a0,$t0
+		li $v0,1
 		syscall
 		
-		li $v0, 4
+		li $v0,4
 		la $a0,Menor
 		syscall
-		
-		move $a0, $t1
+		move $a0,$t2
+		li $v0,1
 		syscall
-	
-		j fim
 		
-	t1t2t0:
-		li $v0, 4
+		j Fim
+		
+	t1_maior_t2_maior_t0:
+		li $v0,4
 		la $a0,Maior
 		syscall 
-		
-		move $a0, $t1
+		move $a0,$t1
+		li $v0,1
 		syscall
 		
-		li $v0, 4
+		li $v0,4
 		la $a0,Medio
 		syscall
-		
-		move $a0, $t2
+		move $a0,$t2
+		li $v0,1
 		syscall
 		
-		li $v0, 4
+		li $v0,4
 		la $a0,Menor
 		syscall
-		
 		move $a0, $t0
+		li $v0,1
 		syscall
-	
-		j fim
 		
-	t1t0t2:
-		li $v0, 4
+		j Fim
+		
+	t2_maior_t1_maior_t0:
+		li $v0,4
 		la $a0,Maior
 		syscall 
-		
-		move $a0, $t1
+		move $a0,$t2
+		li $v0,1
 		syscall
 		
-		li $v0, 4
+		li $v0,4
 		la $a0,Medio
 		syscall
-		
-		move $a0, $t0
+		move $a0,$t1
+		li $v0,1
 		syscall
 		
-		li $v0, 4
+		li $v0,4
 		la $a0,Menor
 		syscall
-		
-		move $a0, $t2
-		syscall
-	
-		j fim
-	t2t1t0:
-		li $v0, 4
-		la $a0,Maior
-		syscall 
-		
-		move $a0, $t2
-		syscall
-		
-		li $v0, 4
-		la $a0,Medio
-		syscall
-		
-		move $a0, $t1
-		syscall
-		
-		li $v0, 4
-		la $a0,Menor
-		syscall
-		
 		move $a0, $t0
+		li $v0,1
 		syscall
 	
-		j fim
-		
-	t2t0t1:
-		li $v0, 4
-		la $a0,Maior
-		syscall 
-		
-		move $a0, $t2
-		syscall
-		
-		li $v0, 4
-		la $a0,Medio
-		syscall
-		
-		move $a0, $t0
-		syscall
-		
-		li $v0, 4
-		la $a0,Menor
-		syscall
-		
-		move $a0, $t1
-		syscall
-	
-		j fim
-	
-	
-	fim: 
+	Fim:
 		li $v0,10
 		syscall
+	
 		

@@ -1,10 +1,11 @@
 .data 
 	Senha1: .word 12345678
-	Senha2: .asciiz "Digite a sua senha: "
+	Senha2: .asciiz "\nDigite a sua senha: "
 	SenhasIguais: .asciiz "Voce foi autenticado corretamente!"
-	SenhasDiferentes: .asciiz "Autenticacao falhou" 
+	SenhasDiferentes: .asciiz "Autenticacao falhou\nTente novamente" 
 
 .text
+main:
 	# Imprimir Digite a sua senha: 
 	li $v0,4
 	la $a0,Senha2
@@ -23,17 +24,19 @@
 	# Comparar se as duas senhas são iguais com operações bit a bit
 	xor $t2, $t1, $t0   # se forem iguais retorna 0
 	beq $t2, $zero, igual
+	
+	# Imprir o erro na autenticação
 	li $v0, 4
 	la $a0, SenhasDiferentes
 	syscall
-	j fim
+	j main
 	
 	igual:
+		# Imprimir você foi autenticado corretamente
 		li $v0, 4
 		la $a0, SenhasIguais
 		syscall
 		
-	fim:
+		# Encerra o programa
 		li $v0, 10
-		
-	
+		syscall
